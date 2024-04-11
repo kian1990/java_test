@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="UDFAge:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/UDFAge_jar</output-path>
+    <root id="archive" name="UDFAge.jar">
+      <element id="module-output" name="UDFAge" />
+    </root>
+  </artifact>
+</component>
