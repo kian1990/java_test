@@ -3,4 +3,4 @@ hive> CREATE TEMPORARY FUNCTION age AS 'com.example.UDFAge' USING JAR '/root/UDF
 
 # 永久注册
 hadoop fs -put /root/UDFAge-1.0.jar /user/hive/warehouse
-hive> CREATE FUNCTION age AS 'com.example.UDFAge' USING JAR 'hdfs:///user/hive/warehouse/UDFAge-1.0.jar';
+hive> CREATE FUNCTION UDFAge AS 'com.example.UDFAge' USING JAR 'hdfs:///user/hive/warehouse/UDFAge-1.0.jar';
