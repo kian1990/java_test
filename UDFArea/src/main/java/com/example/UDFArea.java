@@ -4,25 +4,30 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.hadoop.hive.ql.exec.UDF;
 import org.apache.hadoop.io.Text;
 import org.apache.log4j.Logger;
-import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.util.Collections;
 import java.util.Map;
 
 public class UDFArea extends UDF {
 
     private static final Logger logger = Logger.getLogger(UDFArea.class);
-    private static Map<String, String> regionMap;
-    
+    private static Map<String, String> regionMap = Collections.emptyMap();
+
     static {
         try {
             ObjectMapper mapper = new ObjectMapper();
-            regionMap = mapper.readValue(new File("Area.json"), Map.class);
+            InputStream is = UDFArea.class.getClassLoader().getResourceAsStream("Area.json");
+            if (is != null) {
+                regionMap = mapper.readValue(is, Map.class);
+            } else {
+                logger.error("Failed to find Area.json in classpath");
+            }
         } catch (IOException e) {
             logger.error("Failed to load region codes from Area.json", e);
-            throw new RuntimeException("Failed to load region codes", e);
         }
     }
-    
+
     public Text evaluate(Text idCard) {
         if (idCard == null) {
             logger.warn("Received null ID card");
