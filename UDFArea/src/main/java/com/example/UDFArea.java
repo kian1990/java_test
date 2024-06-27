@@ -41,7 +41,7 @@ public class UDFArea extends UDF {
         }
 
         String regionCode = idCardStr.substring(0, 6);
-        String regionName = regionMap.getOrDefault(regionCode, "Unknown Region");
+        String regionName = regionMap.getOrDefault(regionCode, "");
         
         return new Text(regionName);
     }
