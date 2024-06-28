@@ -28,21 +28,21 @@ public class UDFArea extends UDF {
         }
     }
 
-    public Text evaluate(Text idCard) {
+    public String evaluate(String idCard, int length) {
         if (idCard == null) {
             logger.warn("Received null ID card");
             return null;
         }
         
         String idCardStr = idCard.toString();
-        if (idCardStr.length() < 6) {
+        if (idCardStr.length() < length) {
             logger.warn("Invalid ID card: " + idCardStr);
-            return new Text("Invalid ID Card");
+            return new String("Invalid ID Card");
         }
 
-        String regionCode = idCardStr.substring(0, 6);
+        String regionCode = idCardStr.substring(0, length);
         String regionName = regionMap.getOrDefault(regionCode, "");
         
-        return new Text(regionName);
+        return new String(regionName);
     }
 }
