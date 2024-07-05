@@ -1,8 +1,10 @@
 package com.example;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.hadoop.hive.ql.exec.UDF;
 import org.apache.log4j.Logger;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collections;
@@ -19,7 +21,7 @@ public class UDFCode extends UDF {
             ObjectMapper mapper = new ObjectMapper();
             InputStream is = UDFCode.class.getClassLoader().getResourceAsStream("Code.json");
             if (is != null) {
-                codeMap = mapper.readValue(is, Map.class);
+                codeMap = mapper.readValue(is, new TypeReference<Map<String, String>>() {});
             } else {
                 logger.error("Failed to find Code.json in classpath");
             }
@@ -29,14 +31,14 @@ public class UDFCode extends UDF {
     }
 
     public String evaluate(String code) {
-        if (code == null || code.toString().isEmpty()) {
+        if (code == null || code.trim().isEmpty()) {
             logger.warn("Received null or empty code");
             return null;
         }
 
-        String codeStr = code.toString().trim();
+        String codeStr = code.trim();
         String codeName = codeMap.getOrDefault(codeStr, codeStr);
         
-        return new String(codeName);
+        return codeName;
     }
 }
